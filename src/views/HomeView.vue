@@ -1,5 +1,5 @@
 <script setup>
-  import Layout from '../components/LayoutPage.vue'
+  import Layout from '../components/LayoutPage.vue';
 </script>
 
 <template>

@@ -1,7 +1,9 @@
 <script setup>
   import { reactive, ref, watch } from 'vue';
-  import Layout from '../components/LayoutPage.vue'
-  import TaskFormVue from '../components/TaskForm.vue';
+  import Layout from '../components/LayoutPage.vue';
+  import TaskFormVue from '../components/todolist/TaskForm.vue';
+  import TaskList from '../components/todolist/TaskList.vue';
+  import Snackbar from '../elements/common/snackbar/Snackbar.vue';
   import { typeList } from '../constant/todolist';
 
   const taskForm = reactive({
@@ -10,12 +12,13 @@
     asignee: '',
   });
 
+  const isSnackbar = ref({});
 
   // show form
-  const isCreate = ref(false)
+  const isCreate = ref(false);
 
   const handleShowForm = () => {
-    isCreate.value = !isCreate.value
+    isCreate.value = !isCreate.value;
     taskForm.title = '';
     taskForm.type = '';
     taskForm.asignee = '';
@@ -39,8 +42,26 @@
     taskForm.type = '';
     taskForm.asignee = '';
     isCreate.value = false;
+
+    isSnackbar.value = {
+      status: true,
+      color: '#81ff71',
+      message: 'Task Successfully Created',
+    };
   };
   // end create task
+
+  // delete task
+  const onDelete = (id) => {
+    const newTaskList = taskList.value.filter((task) => task.id !== id);
+    taskList.value = newTaskList;
+
+    isSnackbar.value = {
+      status: true,
+      color: '#81ff71',
+      message: 'Task Successfully Deleted',
+    };
+  };
 
   // drag and drop
   const activeCard = ref(null);
@@ -63,6 +84,10 @@
 
   watch(taskList, (newTasks) => {
     localStorage.setItem('tasks', JSON.stringify(newTasks));
+
+    setTimeout(() => {
+      isSnackbar.value = {...isSnackbar.value, status: false};
+    }, 3000);
   }, { deep: true });
 
 </script>
@@ -79,32 +104,22 @@
           <div class="input-wrapper" v-else>
             <TaskFormVue v-model="taskForm" :handleShowForm="handleShowForm" :handleSubmit="handleSubmit" />
           </div>
+          <div v-if="isSnackbar?.status">
+            <Snackbar :param="isSnackbar" />
+          </div>
         </div>
 
         <div class="body-content">
-          <div class="type-wrapper" v-for="type in typeList" :key="type.id">
-            <h3>{{ type.name }}</h3>
-            <div v-for="(task, index) in taskList" :key="task.id">
-              <div
-                class="task-card"
-                v-if="task.type === type.status"
-                @dragstart="handleDrag(task, index)"
-                @dragend="showDropCard = false"
-                draggable="true"
-               >
-                <p>{{ task.title }}</p>
-                <p>{{ task.asignee }}</p>
-              </div>
-            </div>
-            <div
-              v-if="showDropCard && activeCard.status !== type.status"
-              class="task-drop-card"
-              @dragover.prevent
-              @drop="onDrop(type.status, activeCard.position)"
-            >
-              Drop Here
-            </div>
-          </div>
+          <TaskList
+            :typeList="typeList"
+            :taskList="taskList"
+            :handleDrag="handleDrag"
+            :showDropCard="showDropCard"
+            :activeCard="activeCard"
+            :onDrop="onDrop"
+            :onDelete="onDelete"
+            @setShowDropCard="showDropCard = $event"
+          />
         </div>
       </section>
     </template>
@@ -126,6 +141,7 @@
     flex-direction: row;
     align-items: center;
     gap: 20px;
+    position: relative;
   }
 
   .header-content {
@@ -142,7 +158,7 @@
     padding: 12px;
     border: 1px solid #d5cfcf;
     border-radius: 12px;
-    box-shadow: 2px 5px #d5cfcf;
+    box-shadow: 0 5px #d5cfcf;
     margin: 0 auto;
   }
 
@@ -175,22 +191,6 @@
     opacity: 0.8;
     margin-top: 20px;
     gap: 20px;
-  }
-
-  .type-wrapper {
-    display: flex;
-    flex-direction: column;
-    width: calc(100% / 3);
-    background: #e0e0e0;
-    border-radius: 12px;
-    padding: 8px;
-    box-shadow: 2px 5px #b8b5b5;
-  }
-
-  .type-wrapper > h3 {
-    font-size: 18px;
-    line-height: 24px;
-    text-align: center;
   }
 
   .task-card {

@@ -1,15 +1,15 @@
 <script setup>
-  import { userList } from '../constant/todolist';
+  import { userList } from '../../constant/todolist';
 
   const taskForm = defineModel({
     required: true,
     type: Object,
-  })
+  });
 
-  const { handleShowForm, handleSubmit } = defineProps({
+  defineProps({
     handleShowForm: Function,
     handleSubmit: Function
-  })
+  });
 </script>
 
 <template>

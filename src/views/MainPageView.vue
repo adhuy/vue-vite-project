@@ -1,5 +1,5 @@
 <script setup>
-  import Layout from '../components/LayoutPage.vue'
+  import Layout from '../components/LayoutPage.vue';
 </script>
 
 <template>
@@ -30,6 +30,7 @@
     left: 50%;
     transform: translateX(-50%);
     z-index: 10;
+    box-shadow: 0 5px gray;
   }
 
   nav {
