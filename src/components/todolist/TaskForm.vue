@@ -14,7 +14,8 @@
 
 <template>
   <form @submit.prevent="handleSubmit" v-if="taskForm">
-    <h1>Create Task</h1>
+    <h2>Create Task</h2>
+    <hr />
     <input type="text" placeholder="Enter your task" v-model="taskForm.title" required />
     <select id="type" v-model="taskForm.type" required>
       <option value="">Select Type</option>
@@ -34,23 +35,24 @@
 </template>
 
 <style scoped>
-/*   h1 {
-    margin-bottom: 20px;
-    font-size: 24px;
-    font-weight: 600;
-    text-align: center;
-  } */
-  
   input {
     padding: 10px;
     border: 1px solid #999;
     border-radius: 12px;
   }
 
+  input:focus {
+    outline: 2px solid cyan;
+  }
+
   select {
     padding: 10px;
     border: 1px solid #999;
     border-radius: 12px;
+  }
+
+  select:focus {
+    outline: 2px solid cyan;
   }
 
   .button-wrapper {
@@ -62,9 +64,10 @@
 
   .cancel-button {
     width: max-content;
-    padding: 10px;
+    padding: 8px;
     border: 1px solid gray;
     border-radius: 12px;
+    background: #f2f2f2;
     font-weight: 600;
     cursor: pointer;
     box-shadow: 0 4px #999;
@@ -72,7 +75,7 @@
 
   .save-button {
     width: max-content;
-    padding: 10px;
+    padding: 8px;
     border: 1px solid gray;
     border-radius: 12px;
     background: cyan;

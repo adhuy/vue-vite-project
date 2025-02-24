@@ -3,6 +3,7 @@
   import Layout from '../components/LayoutPage.vue';
   import TaskFormVue from '../components/todolist/TaskForm.vue';
   import TaskList from '../components/todolist/TaskList.vue';
+  import Modal from '../components/todolist/Modal.vue';
   import Snackbar from '../elements/common/snackbar/Snackbar.vue';
   import { typeList } from '../constant/todolist';
 
@@ -13,6 +14,7 @@
   });
 
   const isSnackbar = ref({});
+  const isPopUp = ref({});
 
   // show form
   const isCreate = ref(false);
@@ -52,6 +54,10 @@
   // end create task
 
   // delete task
+  const handleDelete = (param) => {
+    isPopUp.value = { ...param, status: true };
+  };
+
   const onDelete = (id) => {
     const newTaskList = taskList.value.filter((task) => task.id !== id);
     taskList.value = newTaskList;
@@ -70,7 +76,7 @@
   const handleDrag = (param, position) => {
     activeCard.value = { id: param.id, status: param.type, position };
     showDropCard.value = true;
-  }
+  };
 
   const onDrop = (type, position) => {
     const taskToMove = taskList.value[position];
@@ -79,7 +85,7 @@
     newTaskList.splice(position, 0, {...taskToMove, type});
     taskList.value = newTaskList;
     showDropCard.value = false;
-  }
+  };
   // end drag and drop
 
   watch(taskList, (newTasks) => {
@@ -98,7 +104,7 @@
       <section class="wrapper">
         <div class="header-wrapper">
           <div v-if="!isCreate" class="header-content">
-            <h1>To do List</h1>
+            <h1 class="text-2xl font-semibold mb-4">To do List</h1>
             <button type="button" class="add-button" @click="handleShowForm">Create</button>
           </div>
           <div class="input-wrapper" v-else>
@@ -117,9 +123,13 @@
             :showDropCard="showDropCard"
             :activeCard="activeCard"
             :onDrop="onDrop"
-            :onDelete="onDelete"
+            :onDelete="handleDelete"
             @setShowDropCard="showDropCard = $event"
           />
+        </div>
+
+        <div v-if="isPopUp?.status">
+          <Modal :isPopUp="isPopUp" :onDelete="onDelete" />
         </div>
       </section>
     </template>
@@ -170,7 +180,7 @@
 
   .add-button {
     width: max-content;
-    padding: 10px;
+    padding: 8px;
     border: 1px solid gray;
     border-radius: 12px;
     background: cyan;

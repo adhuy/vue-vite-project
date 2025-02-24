@@ -94,7 +94,12 @@
     padding: 12px;
     border: 1px solid #999;
     border-radius: 12px;
-    box-shadow: 0 5px #999;
+    cursor: pointer;
+    box-shadow: 2px 4px 4px #999;
+  }
+
+  .top-article:hover h2 {
+    color: #0066ff;
   }
 
   .sub-top-article {
@@ -113,7 +118,11 @@
     border-radius: 12px;
     margin-bottom: 30px;
     cursor: pointer;
-    box-shadow: 0 4px #999;
+    box-shadow: 2px 4px 4px #999;
+  }
+
+  .card-sub-article:hover h3 {
+    color: #0066ff;
   }
 
   hr {

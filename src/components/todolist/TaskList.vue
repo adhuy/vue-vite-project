@@ -1,6 +1,6 @@
 <script setup>
   import DropCard from './DropCard.vue';
-  import IconTrash from '../../elements/icons/trash/TrashIcon.vue';
+  import { Trash2 } from 'lucide-vue-next';
 
   defineProps({
     typeList: Array,
@@ -28,7 +28,7 @@
 
 <template>
    <div class="type-wrapper" v-for="type in typeList" :key="type.id">
-    <h3>{{ type.name }}</h3>
+    <h3 class="text-xl font-semibold mb-4">{{ type.name }}</h3>
     <DropCard 
       :showDropCard="showDropCard"
       :activeCard="activeCard"
@@ -46,10 +46,10 @@
       >
         <p>{{ task.title }}</p>
         <div class="asignee">
-          <button type="button" @click="onDelete(task.id)">
-            <span class="delete-icon"><IconTrash /></span>
+          <button type="button" @click="onDelete(task)" title="Delete Task">
+            <span class="delete-icon"><Trash2 /></span>
           </button>
-          <p>{{ getInitials(task.asignee) }}</p>
+          <p :title="task.asignee">{{ getInitials(task.asignee) }}</p>
         </div>
       </div>
     </div>
@@ -81,7 +81,7 @@
     text-align: center;
   }
 
-   .task-card {
+  .task-card {
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -91,6 +91,7 @@
     border-radius: 12px;
     margin-bottom: 10px;
     cursor: grab;
+    box-shadow: 0 4px #686868;
   }
 
   .task-card:active {
@@ -105,8 +106,8 @@
   }
 
   .asignee > button {
-   width: max-content;
-    padding: 10px;
+    width: max-content;
+    padding: 5px;
     border: 1px solid gray;
     border-radius: 12px;
     background: #ff3323;
@@ -120,8 +121,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 12px;
-    height: 12px;
+    width: 20px;
+    height: 20px;
   }
 
   button:active {
