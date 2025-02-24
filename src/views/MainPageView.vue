@@ -8,7 +8,7 @@
       <div class="navbar-wrapper">
         <nav>
           <RouterLink to="/" class="link">Home</RouterLink>
-          <RouterLink to="/about" class="link">About</RouterLink>
+          <RouterLink to="/blog" class="link">Blog</RouterLink>
           <RouterLink to="/todo-list" class="link">To do List</RouterLink>
         </nav>
       </div>
