@@ -78,7 +78,7 @@
     padding: 8px;
     border: 1px solid gray;
     border-radius: 12px;
-    background: cyan;
+    background: #6bff38;
     font-weight: 600;
     cursor: pointer;
     box-shadow: 0 4px #999;
